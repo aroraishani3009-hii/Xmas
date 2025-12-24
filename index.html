@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merry Christmas Love</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    .fade-in { animation: fadeIn 2s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    #lightbox {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 50; color: white; text-align: center; padding: 20px;
+    }
+    #lightbox img {
+      max-width: 90%; max-height: 70%;
+      border-radius: 10px; box-shadow: 0 0 20px #fff;
+      margin-bottom: 20px;
+    }
+    #lightbox p { font-size: 1.2rem; font-weight: 500; }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-green-100 via-red-100 to-yellow-100 min-h-screen text-gray-800 font-sans">
+
+  <!-- Countdown Section -->
+  <section class="flex flex-col items-center justify-center py-10 bg-red-200 shadow-md">
+    <h2 class="text-3xl font-bold text-red-700">🎄 Countdown to Christmas with You 🎄</h2>
+    <p id="countdown" class="text-2xl mt-4 text-gray-800"></p>
+  </section>
+
+  <!-- Header -->
+  <header class="text-center py-10 fade-in">
+    <h1 class="text-5xl font-bold text-green-600 animate-bounce">✨ Merry Christmas, My Love ✨</h1>
+    <p class="text-xl mt-2 text-gray-700">25th December • A Day of Joy</p>
+    <p class="mt-4 text-lg">A festive page with memories, laughter, and surprise notes just for you.</p>
+  </header>
+
+  <!-- Load Memories Button (hidden until Christmas) -->
+  <section class="text-center mb-10">
+    <button id="memoriesBtn" onclick="loadMemories()" 
+            class="hidden bg-red-500 text-white px-6 py-2 rounded-full shadow-md hover:bg-red-600 transition duration-300">
+      Open Our Christmas Memories 🎁
+    </button>
+  </section>
+
+  <!-- Hidden Memories Gallery -->
+  <section id="memories" class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-6">
+    <img src="images/christmas1.jpg" alt="Memory 1" class="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="openLightbox(this.src, 'Santa ne vi keh ditta… tu hi sab ton wadiya gift aa! 🎅')" />
+    <img src="images/christmas2.jpg" alt="Memory 2" class="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="openLightbox(this.src, 'Christmas lights vi jealous ne… kyunki tu meri roshni aa! ✨')" />
+    <img src="images/christmas3.jpg" alt="Memory 3" class="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="openLightbox(this.src, 'Meri wish list simple aa: bas tu, coffee, te cuddles! ☕❤️')" />
+  </section>
+
+  <!-- Lightbox -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="Expanded memory" />
+    <p id="lightbox-msg"></p>
+  </div>
+
+  <!-- Script -->
+  <script>
+    function updateCountdown() {
+      const targetDate = new Date("December 25, 2025 00:00:00").getTime();
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        document.getElementById("countdown").textContent = "🎅 It’s Christmas Today! 🎄";
+        document.getElementById("memoriesBtn").classList.remove("hidden"); // show button
+        launchConfetti();
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").textContent =
+        `${days}d ${hours}h ${minutes}m ${seconds}s left 🎁`;
+    }
+    setInterval(updateCountdown, 1000);
+
+    function launchConfetti() {
+      confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+    }
+
+    function loadMemories() {
+      const gallery = document.getElementById("memories");
+      gallery.classList.remove("hidden");
+      gallery.classList.add("fade-in");
+    }
+
+    function openLightbox(src, message) {
+      document.getElementById("lightbox-img").src = src;
+      document.getElementById("lightbox-msg").textContent = message;
+      document.getElementById("lightbox").style.display = "flex";
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
+  </script>
+</body>
+</html>
